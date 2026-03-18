@@ -1,0 +1,311 @@
+/* ============================================
+   PLANIFICACION - Estilos globales
+   ============================================ */
+
+/* --- Variables --- */
+:root {
+  --primary-color: #4aacc4;
+  --primary-dark: #354393;
+  --primary-blue: #4aacc4;
+}
+
+/* --- Base --- */
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin-bottom: 0;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+/* --- Formularios --- */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* --- Footer --- */
+.footer-contact {
+  color: white;
+  background: linear-gradient(90deg, #354393 26%, #4aacc4 69%);
+}
+
+.footer-copyright-text {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  text-align: center;
+}
+
+/* --- Sección de contacto (arriba del footer) --- */
+.contact-section {
+  color: white;
+  background: linear-gradient(90deg, #354393 26%, #4aacc4 69%);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-section-logo {
+  max-height: 220px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.contact-section-info-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.contact-section-title {
+  color: white !important;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(74, 172, 196, 0.8);
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.contact-section-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-section-info-col .contact-section-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.contact-section-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.contact-section-list li:last-child {
+  margin-bottom: 0;
+}
+
+.contact-section-list li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.contact-section-list li:hover .contact-section-icon {
+  transform: scale(1.15);
+  color: white;
+}
+
+.contact-section-icon {
+  color: #4aacc4;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  width: 1.5rem;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.contact-section-link {
+  color: white !important;
+  text-decoration: none !important;
+  transition: opacity 0.2s ease;
+}
+
+.contact-section-link:hover {
+  opacity: 0.9;
+  text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+  .contact-section-info-col {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-section-info-col .contact-section-list {
+    align-items: center;
+  }
+
+  .contact-section-title {
+    text-align: center;
+    display: block;
+  }
+
+  .contact-section-logo {
+    max-height: 150px;
+  }
+}
+
+/* --- Página Contacto --- */
+.contact-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-container h2 {
+  color: #2c3e50;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.contact-container h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(45deg, #354393, #4aacc4);
+  border-radius: 3px;
+}
+
+.contact-block {
+  transition: all 0.3s ease;
+}
+
+.contact-block:hover {
+  transform: translateY(-5px);
+}
+
+.contact-block .section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-block .section-header i {
+  font-size: 1.5rem;
+  color: #4aacc4;
+  background: linear-gradient(45deg, #354393, #4aacc4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-block .section-header h4 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin: 0;
+}
+
+.contact-block .contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-block .contact-list li {
+  margin-bottom: 1rem;
+}
+
+.contact-block .contact-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #6c757d;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.contact-block .contact-link:hover {
+  color: #354393;
+  background: #f1f9fb;
+  transform: translateX(5px);
+}
+
+.contact-block .contact-link i {
+  color: #4aacc4;
+}
+
+.contact-block .contact-link.whatsapp:hover {
+  color: #25D366;
+}
+
+.contact-block .contact-link.whatsapp:hover i {
+  color: #25D366;
+}
+
+.contact-block .location-info {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.contact-block .location-info i {
+  color: #4aacc4;
+  font-size: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.contact-block .location-info p {
+  margin: 0;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 2rem !important;
+  }
+
+  .contact-block .section-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .contact-block .location-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .contact-block .location-info i {
+    margin-bottom: 0.5rem;
+  }
+}

@@ -1,0 +1,97 @@
+@model planificacion.Web.ViewModels.Auth.LoginVm
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+}
+
+<div class="container-fluid vh-100 auth-login-container">
+    <div class="row h-100">
+        <div class="col-12 col-md-6 d-none d-md-flex auth-panel-left align-items-center justify-content-center">
+            <div class="text-center">
+                <div class="mb-4">
+                    <div class="auth-panel-icon mb-3">
+                        <i class="bi bi-shield-lock"></i>
+                    </div>
+                    <h2 class="fw-bold">Panel de Administración</h2>
+                    <p class="lead">Sistema de Gestión de Planificacion</p>
+                </div>
+                <div class="mt-5">
+                    <h5>Características del Sistema:</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-check-circle me-2"></i>Características Planificacion 1</li>
+                        <li><i class="bi bi-check-circle me-2"></i>Características Planificacion 2</li>
+                        <li><i class="bi bi-check-circle me-2"></i>Características Planificacion 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 d-flex align-items-center justify-content-center auth-panel-right">
+            <div class="w-100 auth-form-wrapper">
+                <div class="text-center mb-4">
+                    <h3 class="fw-bold text-white">Iniciar Sesión</h3>
+                    <p class="text-white">Acceso exclusivo para usuarios autorizados</p>
+                </div>
+                <form asp-action="Login" method="post" id="loginForm">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["Error"]
+                        </div>
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label text-white">
+                            <i class="bi bi-person-circle me-2"></i>Correo Electrónico <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Email" class="form-control form-control-lg" placeholder="usuario@ejemplo.com"
+                               autocomplete="email" required id="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label text-white">
+                            <i class="bi bi-lock-fill me-2"></i>Contraseña <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Password" class="form-control form-control-lg"
+                               placeholder="Ingrese su contraseña" autocomplete="current-password"
+                               id="passwordInput" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input asp-for="RememberMe" class="form-check-input" />
+                        <label asp-for="RememberMe" class="form-check-label text-white">Recordarme</label>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-app-primary btn-lg" id="loginBtn">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-4 p-3 auth-security-note rounded">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <strong>Seguridad:</strong> Su sesión será monitoreada por motivos de seguridad.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () { 
+            $('#loginForm').submit(function () {
+                var loginBtn = $('#loginBtn');
+                loginBtn.prop('disabled', true);
+                loginBtn.html('<i class="bi bi-arrow-repeat me-2"></i>Iniciando sesión...');
+            });
+            $('#Email').focus();
+        });
+    </script>
+}

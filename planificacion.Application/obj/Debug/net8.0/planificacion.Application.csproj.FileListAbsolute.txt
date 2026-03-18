@@ -1,0 +1,15 @@
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\bin\Debug\net8.0\planificacion.Application.deps.json
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\bin\Debug\net8.0\planificacion.Application.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\bin\Debug\net8.0\planificacion.Application.pdb
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\bin\Debug\net8.0\planificacion.Domain.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\bin\Debug\net8.0\planificacion.Domain.pdb
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.csproj.AssemblyReference.cache
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.AssemblyInfoInputs.cache
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.AssemblyInfo.cs
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.csproj.CoreCompileInputs.cache
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planific.05D5CC47.Up2Date
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\refint\planificacion.Application.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.pdb
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\ref\planificacion.Application.dll
