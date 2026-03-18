@@ -1,0 +1,54 @@
+@{
+    ViewData["Title"] = "Revisa tu correo";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var email = ViewData["Email"] as string ?? "";
+}
+
+<div class="auth-login-page">
+    <div class="auth-login-card">
+        <div class="auth-card-left">
+            <div class="auth-brand">
+                <img src="~/img/logo.png" alt="Logo" class="auth-logo" asp-append-version="true" />
+                <h1 class="auth-app-name">Planificacion</h1>
+                <p class="auth-app-subtitle">Sistema de Gestión de Tareas</p>
+            </div>
+            <ul class="auth-features">
+                <li class="auth-feature auth-feature-blue">
+                    <span class="auth-feature-icon"><i class="fas fa-check"></i></span>
+                    Organización Inteligente
+                </li>
+                <li class="auth-feature auth-feature-orange">
+                    <span class="auth-feature-icon"><i class="fas fa-check"></i></span>
+                    Tableros y Proyectos
+                </li>
+                <li class="auth-feature auth-feature-pink">
+                    <span class="auth-feature-icon"><i class="fas fa-check"></i></span>
+                    Planificación Visual
+                </li>
+                <li class="auth-feature auth-feature-green">
+                    <span class="auth-feature-icon"><i class="fas fa-check"></i></span>
+                    Seguimiento en Tiempo Real
+                </li>
+            </ul>
+        </div>
+        <div class="auth-card-divider"></div>
+        <div class="auth-card-right">
+            <div class="auth-form-header">
+                <h2 class="auth-form-title">Revisa tu correo</h2>
+                <p class="auth-form-subtitle">Te hemos enviado un enlace de confirmación</p>
+            </div>
+            <div class="auth-message-box">
+                <p class="auth-message-text">
+                    Hemos enviado un correo a <strong>@(string.IsNullOrEmpty(email) ? "tu dirección" : email)</strong> con un enlace para activar tu cuenta.
+                </p>
+                <p class="auth-message-text">
+                    Haz clic en el enlace del correo para confirmar tu dirección y poder iniciar sesión. Si no lo ves, revisa la carpeta de spam.
+                </p>
+                <p class="auth-message-text auth-message-note">El enlace expira en 24 horas.</p>
+            </div>
+            <a asp-controller="Auth" asp-action="Login" class="auth-btn-submit" style="text-decoration:none; text-align:center;">
+                <i class="fas fa-right-to-bracket auth-btn-icon"></i>Ir a iniciar sesión
+            </a>
+        </div>
+    </div>
+</div>
