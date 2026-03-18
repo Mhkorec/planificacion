@@ -17,3 +17,4 @@ C:\Users\delic\Documents\GitHub\planificacion\planificacion.Infraestructure\obj\
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Infraestructure\obj\Debug\net8.0\planificacion.Infraestructure.pdb
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Infraestructure\obj\Debug\net8.0\planificacion.Infraestructure.genruntimeconfig.cache
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Infraestructure\obj\Debug\net8.0\ref\planificacion.Infraestructure.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Infraestructure\obj\Debug\net8.0\planificacion.Infraestructure.sourcelink.json
