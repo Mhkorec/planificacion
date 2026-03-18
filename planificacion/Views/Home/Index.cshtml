@@ -1,9 +1,154 @@
 @{
-    ViewData["Title"] = "Inicio";
+    Layout = User.Identity?.IsAuthenticated == true ? "~/Views/Shared/_HomeLayout.cshtml" : "_Layout";
+    ViewData["Title"] = User.Identity?.IsAuthenticated == true ? "Home" : "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Planificacion</h1>
-    <p>Proyecto base con Clean Architecture (Domain, Application, Infrastructure, Web)</p>
-    <p>Basado en la estructura de SanLuisInvestiga.</p>
-</div>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    var displayName = ViewData["UserDisplayName"] as string ?? "Usuario";
+    <div class="dashboard-welcome">
+        <h1 class="dashboard-welcome-title">Bienvenido de nuevo, @displayName!</h1>
+    </div>
+    <div class="dashboard-stats">
+        <span class="dashboard-stat">
+            <span class="dashboard-stat-icon blue"><i class="fas fa-list-check"></i></span>
+            12 Tareas
+        </span>
+        <span class="dashboard-stat">
+            <span class="dashboard-stat-icon orange"><i class="fas fa-folder"></i></span>
+            3 Proyectos
+        </span>
+    </div>
+    <div class="dashboard-view-tabs">
+        <button type="button" class="dashboard-view-tab active">Board</button>
+        <button type="button" class="dashboard-view-tab">List</button>
+        <button type="button" class="dashboard-view-tab">Calendar</button>
+    </div>
+    <div class="dashboard-grid">
+        <div class="dashboard-board">
+            <div class="dashboard-column">
+                <div class="dashboard-column-header blue">
+                    <h3><i class="fas fa-gem"></i> To Do</h3>
+                    <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
+                </div>
+                <div class="dashboard-column-cards">
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Schedule Inspection</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-orange"><i class="fas fa-calendar-day"></i> Due 14</span>
+                            <span class="dashboard-card-check check-blue"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Update Report</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-yellow"><i class="fas fa-calendar-day"></i> Due 13</span>
+                            <span class="dashboard-card-check check-blue"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Research Suppliers</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-orange"><i class="fas fa-calendar-day"></i> Due 12</span>
+                            <span class="dashboard-card-check check-orange"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-column">
+                <div class="dashboard-column-header orange">
+                    <h3><i class="fas fa-briefcase"></i> In Progress</h3>
+                    <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
+                </div>
+                <div class="dashboard-column-cards">
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Check Equipment</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-red"><i class="fas fa-calendar-day"></i> Due 17</span>
+                            <div class="dashboard-card-avatars">
+                                <span class="dashboard-card-avatar">A</span>
+                                <span class="dashboard-card-avatar">M</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Prepare Documents</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-red"><i class="fas fa-calendar-day"></i> Due 17</span>
+                            <div class="dashboard-card-avatars">
+                                <span class="dashboard-card-avatar">J</span>
+                                <span class="dashboard-card-avatar">L</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-column">
+                <div class="dashboard-column-header purple">
+                    <h3><i class="fas fa-folder"></i> Review</h3>
+                    <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
+                </div>
+                <div class="dashboard-column-cards">
+                    <div class="dashboard-card">
+                        <p class="dashboard-card-title">Final Report</p>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-due due-pink"><i class="fas fa-flag-checkered"></i> Done</span>
+                            <div class="dashboard-card-avatars">
+                                <span class="dashboard-card-avatar">K</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-column">
+                <div class="dashboard-column-header green">
+                    <h3><i class="fas fa-check"></i> Completed</h3>
+                    <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
+                </div>
+                <div class="dashboard-column-cards">
+                    <div class="dashboard-card dashboard-card-completed">
+                        <div class="dashboard-card-title-row">
+                            <span class="dashboard-card-badge badge-teal"><i class="fas fa-check"></i></span>
+                            <p class="dashboard-card-title">Approve Request</p>
+                        </div>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-check check-green"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card dashboard-card-completed">
+                        <div class="dashboard-card-title-row">
+                            <span class="dashboard-card-badge badge-green"><i class="fas fa-check"></i></span>
+                            <p class="dashboard-card-title">Send Confirmation</p>
+                        </div>
+                        <div class="dashboard-card-meta">
+                            <span class="dashboard-card-check check-green"><i class="fas fa-check"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aside class="dashboard-mypages">
+            <div class="dashboard-mypages-header">
+                <h2 class="dashboard-mypages-title">My Pages</h2>
+                <button type="button" class="dashboard-mypages-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
+            </div>
+            <ul class="dashboard-mypages-list">
+                <li><a href="#" class="dashboard-mypages-item"><span class="dashboard-mypages-icon icon-blue"><i class="fas fa-chart-line"></i></span> Dashboard</a></li>
+                <li><a href="#" class="dashboard-mypages-item"><span class="dashboard-mypages-icon icon-orange"><i class="fas fa-car"></i></span> Vehicle Records</a></li>
+                <li><a href="#" class="dashboard-mypages-item"><span class="dashboard-mypages-icon icon-purple"><i class="fas fa-clipboard-check"></i></span> Inspection Checklist</a></li>
+                <li><a href="#" class="dashboard-mypages-item"><span class="dashboard-mypages-icon icon-teal"><i class="fas fa-users"></i></span> Meeting Notes</a></li>
+            </ul>
+            <button type="button" class="dashboard-mypages-new">
+                <i class="fas fa-plus"></i> New Page
+            </button>
+        </aside>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Planificacion</h1>
+        <p>Proyecto base con Clean Architecture (Domain, Application, Infrastructure, Web)</p>
+        <p>Basado en la estructura de SanLuisInvestiga.</p>
+    </div>
+}

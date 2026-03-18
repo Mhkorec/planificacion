@@ -4,10 +4,8 @@ namespace planificacion.Web.ViewModels.Auth;
 
 public class LoginVm
 {
-    [Required]
-    public string Username { get; set; } = "";
-
-    [Required, EmailAddress]
+    [Required(ErrorMessage = "El correo electrónico es requerido.")]
+    [EmailAddress(ErrorMessage = "Ingresa un correo electrónico válido.")]
     public string Email { get; set; } = "";
 
     [Required, DataType(DataType.Password)]

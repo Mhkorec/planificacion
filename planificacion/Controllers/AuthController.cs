@@ -11,15 +11,18 @@ namespace planificacion.Web.Controllers;
 [Route("auth")]
 public class AuthController : Controller
 {
+    private readonly ILogger<AuthController> _logger;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
 
     public AuthController(
+        ILogger<AuthController> logger,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService)
     {
+        _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
         _emailService = emailService;
@@ -35,13 +38,31 @@ public class AuthController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginVm vm)
     {
-        if (!ModelState.IsValid) return View(vm);
+        _logger.LogInformation("Login: intento de inicio de sesión para email {Email}", vm.Email ?? "(null)");
+
+        if (!ModelState.IsValid)
+        {
+            _logger.LogWarning("Login: validación fallida para {Email}. Errores: {Errors}",
+                vm.Email,
+                string.Join("; ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)));
+            return View(vm);
+        }
+
+        var user = await _userManager.FindByEmailAsync(vm.Email!);
+        if (user == null)
+        {
+            _logger.LogWarning("Login: no existe usuario con email {Email}", vm.Email);
+            ModelState.AddModelError("", "Credenciales inválidas.");
+            return View(vm);
+        }
 
         var result = await _signInManager.PasswordSignInAsync(
-            vm.Email, vm.Password, isPersistent: vm.RememberMe, lockoutOnFailure: true);
+            user, vm.Password!, isPersistent: vm.RememberMe, lockoutOnFailure: true);
 
         if (!result.Succeeded)
         {
+            _logger.LogWarning("Login: falló para {Email}. Succeeded={Succeeded}, IsLockedOut={IsLockedOut}, IsNotAllowed={IsNotAllowed} (contraseña incorrecta o cuenta no permitida)",
+                vm.Email, result.Succeeded, result.IsLockedOut, result.IsNotAllowed);
             if (result.IsNotAllowed)
                 ModelState.AddModelError("", "Debes confirmar tu correo electrónico antes de iniciar sesión. Revisa tu bandeja de entrada.");
             else
@@ -49,10 +70,17 @@ public class AuthController : Controller
             return View(vm);
         }
 
-        if (!string.IsNullOrWhiteSpace(vm.ReturnUrl) && Url.IsLocalUrl(vm.ReturnUrl))
-            return Redirect(vm.ReturnUrl);
+        _logger.LogInformation("Login: inicio de sesión exitoso para {Email}. Redirect ReturnUrl={ReturnUrl}",
+            vm.Email, vm.ReturnUrl ?? "(ninguna)");
 
-        return RedirectToAction("Index", "Home");
+        if (!string.IsNullOrWhiteSpace(vm.ReturnUrl) && Url.IsLocalUrl(vm.ReturnUrl))
+        {
+            _logger.LogInformation("Login: redirigiendo a ReturnUrl {ReturnUrl}", vm.ReturnUrl);
+            return Redirect(vm.ReturnUrl);
+        }
+
+        _logger.LogInformation("Login: redirigiendo a Home/Index");
+        return RedirectToAction(nameof(HomeController.Index), "Home");
     }
 
     [HttpGet("register")]
