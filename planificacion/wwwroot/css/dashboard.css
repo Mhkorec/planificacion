@@ -259,7 +259,6 @@
 .dashboard-content {
   flex: 1;
   padding: 1.5rem;
-  overflow-auto;
 }
 
 /* ----- Welcome + stats ----- */
@@ -379,6 +378,12 @@
   flex-direction: column;
   min-height: 200px;
 }
+
+/* Fondo de la columna: mismo color que el título al 20% de opacidad */
+.dashboard-column.column-blue { background: rgba(45, 127, 249, 0.2); }
+.dashboard-column.column-orange { background: rgba(255, 176, 32, 0.2); }
+.dashboard-column.column-purple { background: rgba(123, 97, 255, 0.2); }
+.dashboard-column.column-green { background: rgba(82, 196, 26, 0.2); }
 
 .dashboard-column-header {
   padding: 0.75rem 1rem;
