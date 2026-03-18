@@ -13,3 +13,4 @@ C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debu
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\refint\planificacion.Application.dll
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.pdb
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\ref\planificacion.Application.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Application\obj\Debug\net8.0\planificacion.Application.sourcelink.json

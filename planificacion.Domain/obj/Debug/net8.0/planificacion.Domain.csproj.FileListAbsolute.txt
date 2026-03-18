@@ -9,3 +9,4 @@ C:\Users\delic\Documents\GitHub\planificacion\planificacion.Domain\obj\Debug\net
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Domain\obj\Debug\net8.0\refint\planificacion.Domain.dll
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Domain\obj\Debug\net8.0\planificacion.Domain.pdb
 C:\Users\delic\Documents\GitHub\planificacion\planificacion.Domain\obj\Debug\net8.0\ref\planificacion.Domain.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion.Domain\obj\Debug\net8.0\planificacion.Domain.sourcelink.json

@@ -153,3 +153,4 @@ C:\Users\delic\Documents\GitHub\planificacion\planificacion\obj\Debug\net8.0\ref
 C:\Users\delic\Documents\GitHub\planificacion\planificacion\obj\Debug\net8.0\planificacion.Web.pdb
 C:\Users\delic\Documents\GitHub\planificacion\planificacion\obj\Debug\net8.0\planificacion.Web.genruntimeconfig.cache
 C:\Users\delic\Documents\GitHub\planificacion\planificacion\obj\Debug\net8.0\ref\planificacion.Web.dll
+C:\Users\delic\Documents\GitHub\planificacion\planificacion\obj\Debug\net8.0\planificacion.Web.sourcelink.json
