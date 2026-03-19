@@ -1,0 +1,255 @@
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = "Configuración";
+}
+
+<div class="dashboard-welcome">
+    <h1 class="dashboard-welcome-title">Configuración</h1>
+    <p class="dashboard-welcome-subtitle text-muted">Personaliza el aspecto de las tarjetas y estados del tablero.</p>
+</div>
+
+<div class="settings-section">
+    <div class="settings-card">
+        <h2 class="settings-card-title"><i class="fas fa-palette"></i> Tema y colores</h2>
+        <p class="settings-card-desc">Elige un tema o define los colores para las columnas y chips de estado (To Do, In Progress, Review, Completed).</p>
+
+        <div class="settings-themes">
+            <label class="settings-label">Temas predefinidos</label>
+            <div class="settings-presets" id="themePresets">
+                <button type="button" class="settings-preset active" data-theme="default" title="Predeterminado">
+                    <span class="settings-preset-swatch" style="background: #2D7FF9;"></span>
+                    <span class="settings-preset-swatch" style="background: #FFB020;"></span>
+                    <span class="settings-preset-swatch" style="background: #7B61FF;"></span>
+                    <span class="settings-preset-swatch" style="background: #52C41A;"></span>
+                    <span class="settings-preset-name">Predeterminado</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="ocean" title="Océano">
+                    <span class="settings-preset-swatch" style="background: #0ea5e9;"></span>
+                    <span class="settings-preset-swatch" style="background: #06b6d4;"></span>
+                    <span class="settings-preset-swatch" style="background: #6366f1;"></span>
+                    <span class="settings-preset-swatch" style="background: #14b8a6;"></span>
+                    <span class="settings-preset-name">Océano</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="forest" title="Bosque">
+                    <span class="settings-preset-swatch" style="background: #3b82f6;"></span>
+                    <span class="settings-preset-swatch" style="background: #84cc16;"></span>
+                    <span class="settings-preset-swatch" style="background: #22c55e;"></span>
+                    <span class="settings-preset-swatch" style="background: #16a34a;"></span>
+                    <span class="settings-preset-name">Bosque</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="sunset" title="Atardecer">
+                    <span class="settings-preset-swatch" style="background: #f97316;"></span>
+                    <span class="settings-preset-swatch" style="background: #ef4444;"></span>
+                    <span class="settings-preset-swatch" style="background: #ec4899;"></span>
+                    <span class="settings-preset-swatch" style="background: #a855f7;"></span>
+                    <span class="settings-preset-name">Atardecer</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="minimal" title="Minimal">
+                    <span class="settings-preset-swatch" style="background: #64748b;"></span>
+                    <span class="settings-preset-swatch" style="background: #94a3b8;"></span>
+                    <span class="settings-preset-swatch" style="background: #475569;"></span>
+                    <span class="settings-preset-swatch" style="background: #334155;"></span>
+                    <span class="settings-preset-name">Minimal</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="lavanda" title="Lavanda">
+                    <span class="settings-preset-swatch" style="background: #D6BEFA;"></span>
+                    <span class="settings-preset-swatch" style="background: #CB94F7;"></span>
+                    <span class="settings-preset-swatch" style="background: #A76EEE;"></span>
+                    <span class="settings-preset-swatch" style="background: #915FF0;"></span>
+                    <span class="settings-preset-name">Lavanda</span>
+                </button>
+                <button type="button" class="settings-preset" data-theme="tierra" title="Tierra">
+                    <span class="settings-preset-swatch" style="background: #68604A;"></span>
+                    <span class="settings-preset-swatch" style="background: #BEC5A4;"></span>
+                    <span class="settings-preset-swatch" style="background: #8A8E75;"></span>
+                    <span class="settings-preset-swatch" style="background: #D5C7AD;"></span>
+                    <span class="settings-preset-name">Tierra</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="settings-custom">
+            <label class="settings-label">Colores personalizados (por estado)</label>
+            <div class="settings-color-grid">
+                <div class="settings-color-field">
+                    <label class="settings-color-label">To Do</label>
+                    <input type="color" id="colorTodo" value="#2D7FF9" class="settings-color-input" aria-label="Color To Do" />
+                    <input type="text" id="colorTodoHex" value="#2D7FF9" class="settings-color-hex" maxlength="7" aria-label="Código hex To Do" />
+                </div>
+                <div class="settings-color-field">
+                    <label class="settings-color-label">In Progress</label>
+                    <input type="color" id="colorProgress" value="#FFB020" class="settings-color-input" aria-label="Color In Progress" />
+                    <input type="text" id="colorProgressHex" value="#FFB020" class="settings-color-hex" maxlength="7" aria-label="Código hex In Progress" />
+                </div>
+                <div class="settings-color-field">
+                    <label class="settings-color-label">Review</label>
+                    <input type="color" id="colorReview" value="#7B61FF" class="settings-color-input" aria-label="Color Review" />
+                    <input type="text" id="colorReviewHex" value="#7B61FF" class="settings-color-hex" maxlength="7" aria-label="Código hex Review" />
+                </div>
+                <div class="settings-color-field">
+                    <label class="settings-color-label">Completed</label>
+                    <input type="color" id="colorCompleted" value="#52C41A" class="settings-color-input" aria-label="Color Completed" />
+                    <input type="text" id="colorCompletedHex" value="#52C41A" class="settings-color-hex" maxlength="7" aria-label="Código hex Completed" />
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-actions">
+            <button type="button" class="settings-btn settings-btn-primary" id="saveTheme">
+                <i class="fas fa-check"></i> Guardar tema
+            </button>
+            <button type="button" class="settings-btn settings-btn-secondary" id="resetTheme">
+                <i class="fas fa-undo"></i> Restaurar predeterminado
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var STORAGE_KEY = 'dashboardTheme';
+    var themes = {
+        default: { blue: '#2D7FF9', orange: '#FFB020', purple: '#7B61FF', green: '#52C41A' },
+        ocean:   { blue: '#0ea5e9', orange: '#06b6d4', purple: '#6366f1', green: '#14b8a6' },
+        forest:  { blue: '#3b82f6', orange: '#84cc16', purple: '#22c55e', green: '#16a34a' },
+        sunset:  { blue: '#f97316', orange: '#ef4444', purple: '#ec4899', green: '#a855f7' },
+        minimal: { blue: '#64748b', orange: '#94a3b8', purple: '#475569', green: '#334155' },
+        lavanda: { blue: '#D6BEFA', orange: '#CB94F7', purple: '#A76EEE', green: '#915FF0' },
+        tierra:  { blue: '#68604A', orange: '#BEC5A4', purple: '#8A8E75', green: '#D5C7AD' }
+    };
+    var colorIds = ['Todo', 'Progress', 'Review', 'Completed'];
+    var mapToVars = { Todo: 'blue', Progress: 'orange', Review: 'purple', Completed: 'green' };
+
+    function hexToRgba(hex, a) {
+        if (!hex || String(hex).indexOf('#') !== 0) return 'rgba(45,127,249,0.2)';
+        var m = String(hex).slice(1).match(/([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/i);
+        if (!m) return 'rgba(45,127,249,0.2)';
+        return 'rgba(' + parseInt(m[1], 16) + ',' + parseInt(m[2], 16) + ',' + parseInt(m[3], 16) + ',' + a + ')';
+    }
+    function applyTheme(theme) {
+        var r = document.documentElement;
+        r.style.setProperty('--dash-blue', theme.blue);
+        r.style.setProperty('--dash-orange', theme.orange);
+        r.style.setProperty('--dash-purple', theme.purple);
+        r.style.setProperty('--dash-green', theme.green);
+        r.style.setProperty('--dash-column-blue', hexToRgba(theme.blue, 0.2));
+        r.style.setProperty('--dash-column-orange', hexToRgba(theme.orange, 0.2));
+        r.style.setProperty('--dash-column-purple', hexToRgba(theme.purple, 0.2));
+        r.style.setProperty('--dash-column-green', hexToRgba(theme.green, 0.2));
+    }
+
+    function saveToStorage(theme, preset) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ theme: theme, preset: preset || 'custom' }));
+        } catch (e) {}
+    }
+
+    function loadFromStorage() {
+        try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                var data = JSON.parse(raw);
+                if (data.theme) {
+                    applyTheme(data.theme);
+                    return data;
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function setCustomFromTheme(theme) {
+        document.getElementById('colorTodo').value = theme.blue;
+        document.getElementById('colorTodoHex').value = theme.blue;
+        document.getElementById('colorProgress').value = theme.orange;
+        document.getElementById('colorProgressHex').value = theme.orange;
+        document.getElementById('colorReview').value = theme.purple;
+        document.getElementById('colorReviewHex').value = theme.purple;
+        document.getElementById('colorCompleted').value = theme.green;
+        document.getElementById('colorCompletedHex').value = theme.green;
+    }
+
+    function getCustomTheme() {
+        return {
+            blue: document.getElementById('colorTodoHex').value || '#2D7FF9',
+            orange: document.getElementById('colorProgressHex').value || '#FFB020',
+            purple: document.getElementById('colorReviewHex').value || '#7B61FF',
+            green: document.getElementById('colorCompletedHex').value || '#52C41A'
+        };
+    }
+
+    function normalizeHex(s) {
+        s = (s || '').trim();
+        if (s.indexOf('#') !== 0) s = '#' + s;
+        return /^#[0-9A-Fa-f]{6}$/.test(s) ? s : null;
+    }
+
+    var presets = document.getElementById('themePresets');
+    if (presets) {
+        presets.querySelectorAll('.settings-preset').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                presets.querySelectorAll('.settings-preset').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var name = btn.getAttribute('data-theme');
+                var theme = themes[name] || themes.default;
+                setCustomFromTheme(theme);
+                applyTheme(theme);
+                saveToStorage(theme, name);
+            });
+        });
+    }
+
+    colorIds.forEach(function (id) {
+        var colorInput = document.getElementById('color' + id);
+        var hexInput = document.getElementById('color' + id + 'Hex');
+        if (colorInput && hexInput) {
+            colorInput.addEventListener('input', function () {
+                hexInput.value = this.value;
+            });
+            hexInput.addEventListener('input', function () {
+                var hex = normalizeHex(this.value);
+                if (hex) colorInput.value = hex;
+            });
+            hexInput.addEventListener('blur', function () {
+                var hex = normalizeHex(this.value);
+                if (hex) this.value = hex; else this.value = colorInput.value;
+            });
+        }
+    });
+
+    var saveBtn = document.getElementById('saveTheme');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function () {
+            var theme = getCustomTheme();
+            applyTheme(theme);
+            saveToStorage(theme, 'custom');
+            presets.querySelectorAll('.settings-preset').forEach(function (b) { b.classList.remove('active'); });
+        });
+    }
+
+    var resetBtn = document.getElementById('resetTheme');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+            var def = themes.default;
+            setCustomFromTheme(def);
+            applyTheme(def);
+            saveToStorage(def, 'default');
+            presets.querySelectorAll('.settings-preset').forEach(function (b) {
+                b.classList.toggle('active', b.getAttribute('data-theme') === 'default');
+            });
+        });
+    }
+
+    var saved = loadFromStorage();
+    if (saved && saved.theme) {
+        setCustomFromTheme(saved.theme);
+        if (saved.preset && saved.preset !== 'custom') {
+            presets.querySelectorAll('.settings-preset').forEach(function (b) {
+                b.classList.toggle('active', b.getAttribute('data-theme') === saved.preset);
+            });
+        }
+    }
+})();
+</script>
+}

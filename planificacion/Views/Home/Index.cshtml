@@ -6,25 +6,68 @@
 @if (User.Identity?.IsAuthenticated == true)
 {
     var displayName = ViewData["UserDisplayName"] as string ?? "Usuario";
+    var dashboardView = ViewData["DashboardView"] as string ?? "board";
+    var isTasksPage = dashboardView == "list";
     <div class="dashboard-welcome">
-        <h1 class="dashboard-welcome-title">Bienvenido de nuevo, @displayName!</h1>
+        <h1 class="dashboard-welcome-title">@(isTasksPage ? "Task" : "Bienvenido de nuevo, " + displayName + "!")</h1>
     </div>
     <div class="dashboard-stats">
         <span class="dashboard-stat">
-            <span class="dashboard-stat-icon blue"><i class="fas fa-list-check"></i></span>
+            <span class="dashboard-stat-icon @(isTasksPage ? "orange" : "blue")"><i class="fas fa-list-check"></i></span>
             12 Tareas
         </span>
         <span class="dashboard-stat">
-            <span class="dashboard-stat-icon orange"><i class="fas fa-folder"></i></span>
+            <span class="dashboard-stat-icon @(isTasksPage ? "coral" : "orange")"><i class="fas fa-folder"></i></span>
             3 Proyectos
         </span>
     </div>
-    <div class="dashboard-view-tabs">
-        <button type="button" class="dashboard-view-tab active">Board</button>
-        <button type="button" class="dashboard-view-tab">List</button>
-        <button type="button" class="dashboard-view-tab">Calendar</button>
-    </div>
-    <div class="dashboard-grid">
+    <div class="dashboard-views" id="dashboardViews" data-current-view="@dashboardView">
+        <div class="dashboard-view-toolbar">
+            <div class="dashboard-view-tabs">
+                <button type="button" class="dashboard-btn-new-task" id="btnNewTask" aria-haspopup="dialog" aria-controls="modalNewTask">
+                    <i class="fas fa-plus"></i> Nueva tarea
+                </button>
+                <button type="button" class="dashboard-view-tab @(dashboardView == "board" ? "active" : "")" data-view="board" aria-pressed="@(dashboardView == "board")">Board</button>
+                <button type="button" class="dashboard-view-tab @(dashboardView == "list" ? "active" : "")" data-view="list" aria-pressed="@(dashboardView == "list")">List</button>
+                <button type="button" class="dashboard-view-tab" data-view="calendar" aria-pressed="false">Calendar</button>
+            </div>
+            <div class="dashboard-filter-wrap">
+                <button type="button" class="dashboard-filter-btn" id="filterToggle" aria-expanded="false" aria-haspopup="true" title="Filtros">
+                    <i class="fas fa-filter"></i>
+                    <span>Filtros</span>
+                    <span class="dashboard-filter-badge" id="filterBadge" aria-hidden="true" hidden>0</span>
+                </button>
+                <div class="dashboard-filter-dropdown" id="filterDropdown" hidden>
+                    <div class="dashboard-filter-section">
+                        <span class="dashboard-filter-label">Estado</span>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterStatus" value="not-started" /> Not Started</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterStatus" value="in-progress" /> In Progress</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterStatus" value="in-review" /> In Review</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterStatus" value="completed" /> Completed</label>
+                    </div>
+                    <div class="dashboard-filter-section">
+                        <span class="dashboard-filter-label">Prioridad</span>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterPriority" value="high" /> High</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterPriority" value="medium" /> Medium</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterPriority" value="low" /> Low</label>
+                    </div>
+                    <div class="dashboard-filter-section">
+                        <span class="dashboard-filter-label">Responsable</span>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterOwner" value="alex" /> Alex</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterOwner" value="sarah" /> Sarah</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterOwner" value="david" /> David</label>
+                        <label class="dashboard-filter-option"><input type="checkbox" name="filterOwner" value="kate" /> Kate</label>
+                    </div>
+                    <div class="dashboard-filter-actions">
+                        <button type="button" class="dashboard-filter-apply" id="filterApply">Aplicar</button>
+                        <button type="button" class="dashboard-filter-clear" id="filterClear">Limpiar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dashboard-main-area">
+            <div class="dashboard-view-board" style="@(isTasksPage ? "display:none" : null)">
         <div class="dashboard-board">
             <div class="dashboard-column column-blue">
                 <div class="dashboard-column-header blue">
@@ -32,21 +75,21 @@
                     <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
                 </div>
                 <div class="dashboard-column-cards">
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="not-started" data-priority="medium" data-owner="alex">
                         <p class="dashboard-card-title">Schedule Inspection</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-orange"><i class="fas fa-calendar-day"></i> Due 14</span>
                             <span class="dashboard-card-check check-blue"><i class="fas fa-check"></i></span>
                         </div>
                     </div>
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="not-started" data-priority="low" data-owner="sarah">
                         <p class="dashboard-card-title">Update Report</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-yellow"><i class="fas fa-calendar-day"></i> Due 13</span>
                             <span class="dashboard-card-check check-blue"><i class="fas fa-check"></i></span>
                         </div>
                     </div>
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="not-started" data-priority="high" data-owner="david">
                         <p class="dashboard-card-title">Research Suppliers</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-orange"><i class="fas fa-calendar-day"></i> Due 12</span>
@@ -61,7 +104,7 @@
                     <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
                 </div>
                 <div class="dashboard-column-cards">
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="in-progress" data-priority="high" data-owner="alex">
                         <p class="dashboard-card-title">Check Equipment</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-red"><i class="fas fa-calendar-day"></i> Due 17</span>
@@ -71,7 +114,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="in-progress" data-priority="high" data-owner="alex">
                         <p class="dashboard-card-title">Prepare Documents</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-red"><i class="fas fa-calendar-day"></i> Due 17</span>
@@ -89,7 +132,7 @@
                     <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
                 </div>
                 <div class="dashboard-column-cards">
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" data-status="in-review" data-priority="medium" data-owner="kate">
                         <p class="dashboard-card-title">Final Report</p>
                         <div class="dashboard-card-meta">
                             <span class="dashboard-card-due due-pink"><i class="fas fa-flag-checkered"></i> Done</span>
@@ -106,7 +149,7 @@
                     <button type="button" class="dashboard-column-menu" aria-label="Opciones"><i class="fas fa-ellipsis"></i></button>
                 </div>
                 <div class="dashboard-column-cards">
-                    <div class="dashboard-card dashboard-card-completed">
+                    <div class="dashboard-card dashboard-card-completed" data-status="completed" data-priority="medium" data-owner="alex">
                         <div class="dashboard-card-title-row">
                             <span class="dashboard-card-badge badge-teal"><i class="fas fa-check"></i></span>
                             <p class="dashboard-card-title">Approve Request</p>
@@ -115,7 +158,7 @@
                             <span class="dashboard-card-check check-green"><i class="fas fa-check"></i></span>
                         </div>
                     </div>
-                    <div class="dashboard-card dashboard-card-completed">
+                    <div class="dashboard-card dashboard-card-completed" data-status="completed" data-priority="medium" data-owner="sarah">
                         <div class="dashboard-card-title-row">
                             <span class="dashboard-card-badge badge-green"><i class="fas fa-check"></i></span>
                             <p class="dashboard-card-title">Send Confirmation</p>
@@ -127,6 +170,120 @@
                 </div>
             </div>
         </div>
+            </div>
+            <div class="dashboard-view-list" id="dashboardViewList" @Html.Raw(!isTasksPage ? "hidden" : "")>
+                <div class="dashboard-task-table-wrap">
+                    <table class="dashboard-task-table" aria-label="Lista de tareas">
+                        <thead>
+                            <tr>
+                                <th class="dashboard-task-th dashboard-task-th-task">
+                                    <i class="fas fa-list dashboard-task-th-icon" aria-hidden="true"></i>
+                                    <span>Task</span>
+                                </th>
+                                <th class="dashboard-task-th dashboard-task-th-status">
+                                    <i class="fas fa-align-left dashboard-task-th-icon" aria-hidden="true"></i>
+                                    <span>Status</span>
+                                </th>
+                                <th class="dashboard-task-th dashboard-task-th-due">
+                                    <i class="fas fa-filter dashboard-task-th-icon" aria-hidden="true"></i>
+                                    <span>Due Date</span>
+                                </th>
+                                <th class="dashboard-task-th dashboard-task-th-priority">
+                                    <i class="fas fa-filter dashboard-task-th-icon" aria-hidden="true"></i>
+                                    <span>Priority</span>
+                                </th>
+                                <th class="dashboard-task-th dashboard-task-th-owner">
+                                    <i class="fas fa-filter dashboard-task-th-icon" aria-hidden="true"></i>
+                                    <span>Owner</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="dashboard-task-row" data-status="in-progress" data-priority="high" data-owner="alex">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-pencil-alt dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Design new homepage</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-in-progress"><i class="fas fa-check" aria-hidden="true"></i> In Progress</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 25</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-high">High</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">A</span> Alex</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="not-started" data-priority="medium" data-owner="sarah">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-file-alt dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Write blog post</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-not-started"><i class="fas fa-check" aria-hidden="true"></i> Not Started</span></td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-due-today"><i class="fas fa-leaf" aria-hidden="true"></i> Today</span></td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-medium">Medium</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">S</span> Sarah</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="in-review" data-priority="low" data-owner="david">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-search dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Bug fixes</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-in-review"><i class="fas fa-check" aria-hidden="true"></i> In Review</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 28</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-low">Low</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">D</span> David</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="not-started" data-priority="medium" data-owner="alex">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-pencil-alt dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Schedule Inspection</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-not-started"><i class="fas fa-check" aria-hidden="true"></i> Not Started</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 14</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-medium">Medium</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">A</span> Alex</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="not-started" data-priority="low" data-owner="sarah">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-file-alt dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Update Report</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-not-started"><i class="fas fa-check" aria-hidden="true"></i> Not Started</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 13</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-low">Low</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">S</span> Sarah</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="in-progress" data-priority="high" data-owner="david">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-search dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Research Suppliers</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-in-progress"><i class="fas fa-check" aria-hidden="true"></i> In Progress</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 12</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-high">High</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">D</span> David</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="in-progress" data-priority="high" data-owner="alex">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-wrench dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Check Equipment</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-in-progress"><i class="fas fa-check" aria-hidden="true"></i> In Progress</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 17</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-high">High</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">A</span> Alex</td>
+                            </tr>
+                            <tr class="dashboard-task-row" data-status="completed" data-priority="medium" data-owner="kate">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-folder dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>Final Report</span>
+                                </td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-completed"><i class="fas fa-check" aria-hidden="true"></i> Completed</span></td>
+                                <td class="dashboard-task-td"><i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i> Apr 10</td>
+                                <td class="dashboard-task-td"><span class="dashboard-task-badge dashboard-task-badge-priority-medium">Medium</span></td>
+                                <td class="dashboard-task-td dashboard-task-td-owner"><span class="dashboard-task-avatar">K</span> Kate</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
         <aside class="dashboard-mypages">
             <div class="dashboard-mypages-header">
                 <h2 class="dashboard-mypages-title">My Pages</h2>
@@ -142,7 +299,231 @@
                 <i class="fas fa-plus"></i> New Page
             </button>
         </aside>
+        </div>
     </div>
+
+    <!-- Modal Nueva tarea -->
+    <div class="task-modal-overlay" id="modalNewTaskOverlay" role="dialog" aria-modal="true" aria-labelledby="modalNewTaskTitle" hidden>
+        <div class="task-modal" id="modalNewTask">
+            <div class="task-modal-header">
+                <h2 class="task-modal-title" id="modalNewTaskTitle">
+                    <i class="fas fa-list-check task-modal-title-icon"></i> Nueva tarea
+                </h2>
+                <button type="button" class="task-modal-close" id="modalNewTaskClose" aria-label="Cerrar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="task-modal-form" id="formNewTask">
+                <div class="task-modal-body">
+                    <div class="task-form-group task-form-group-full">
+                        <label for="taskName">Nombre de la tarea</label>
+                        <input type="text" id="taskName" name="taskName" class="task-form-input" placeholder="Introduce el nombre de la tarea..." required />
+                    </div>
+                    <div class="task-form-row">
+                        <div class="task-form-group">
+                            <label for="taskStatus">Estado</label>
+                            <select id="taskStatus" name="taskStatus" class="task-form-select task-form-select-status">
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress" selected>In Progress</option>
+                                <option value="in-review">In Review</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="task-form-group">
+                            <label for="taskDueDate">Fecha de vencimiento</label>
+                            <div class="task-form-date-wrap">
+                                <i class="fas fa-calendar-alt task-form-date-icon"></i>
+                                <input type="date" id="taskDueDate" name="taskDueDate" class="task-form-input task-form-input-date" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-form-row">
+                        <div class="task-form-group">
+                            <label for="taskPriority">Prioridad</label>
+                            <select id="taskPriority" name="taskPriority" class="task-form-select task-form-select-priority">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high" selected>High</option>
+                            </select>
+                        </div>
+                        <div class="task-form-group">
+                            <label for="taskAssignee">Asignado a</label>
+                            <select id="taskAssignee" name="taskAssignee" class="task-form-select task-form-select-assignee">
+                                <option value="alex" data-avatar="A">Alex</option>
+                                <option value="sarah" data-avatar="S">Sarah</option>
+                                <option value="david" data-avatar="D">David</option>
+                                <option value="kate" data-avatar="K">Kate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="task-form-group task-form-group-full">
+                        <label for="taskNotes">Notas</label>
+                        <textarea id="taskNotes" name="taskNotes" class="task-form-textarea" rows="4" placeholder="Añade detalles adicionales..."></textarea>
+                    </div>
+                </div>
+                <div class="task-modal-footer">
+                    <button type="button" class="task-modal-btn task-modal-btn-cancel" id="modalNewTaskCancel">Cancelar</button>
+                    <button type="submit" class="task-modal-btn task-modal-btn-primary">
+                        <i class="fas fa-plus"></i> Añadir tarea
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var views = document.getElementById('dashboardViews');
+            var listView = document.getElementById('dashboardViewList');
+            if (!views || !listView) return;
+            var tabs = views.querySelectorAll('.dashboard-view-tab[data-view]');
+            var board = views.querySelector('.dashboard-view-board');
+            function showView(view) {
+                views.setAttribute('data-current-view', view);
+                if (view === 'list') {
+                    if (board) board.style.display = 'none';
+                    listView.hidden = false;
+                } else {
+                    if (board) board.style.display = '';
+                    listView.hidden = true;
+                }
+            }
+            tabs.forEach(function (tab) {
+                tab.addEventListener('click', function () {
+                    var view = this.getAttribute('data-view');
+                    tabs.forEach(function (t) {
+                        t.classList.toggle('active', t === tab);
+                        t.setAttribute('aria-pressed', t === tab ? 'true' : 'false');
+                    });
+                    showView(view);
+                });
+            });
+
+            /* Filtros */
+            var filterToggle = document.getElementById('filterToggle');
+            var filterDropdown = document.getElementById('filterDropdown');
+            var filterApply = document.getElementById('filterApply');
+            var filterClear = document.getElementById('filterClear');
+            var filterBadge = document.getElementById('filterBadge');
+            if (filterToggle && filterDropdown) {
+                filterToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var open = !filterDropdown.hidden;
+                    filterDropdown.hidden = !open;
+                    filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                });
+                document.addEventListener('click', function () {
+                    filterDropdown.hidden = true;
+                    filterToggle.setAttribute('aria-expanded', 'false');
+                });
+                filterDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
+            }
+            function getActiveFilters() {
+                var status = [];
+                var priority = [];
+                var owner = [];
+                views.querySelectorAll('input[name="filterStatus"]:checked').forEach(function (c) { status.push(c.value); });
+                views.querySelectorAll('input[name="filterPriority"]:checked').forEach(function (c) { priority.push(c.value); });
+                views.querySelectorAll('input[name="filterOwner"]:checked').forEach(function (c) { owner.push(c.value); });
+                return { status: status, priority: priority, owner: owner };
+            }
+            function applyFilters() {
+                var f = getActiveFilters();
+                var total = f.status.length + f.priority.length + f.owner.length;
+                if (filterBadge) {
+                    if (total === 0) {
+                        filterBadge.hidden = true;
+                    } else {
+                        filterBadge.hidden = false;
+                        filterBadge.textContent = total;
+                    }
+                }
+                function matches(item) {
+                    var s = item.getAttribute('data-status');
+                    var p = item.getAttribute('data-priority');
+                    var o = item.getAttribute('data-owner');
+                    if (f.status.length && (!s || f.status.indexOf(s) === -1)) return false;
+                    if (f.priority.length && (!p || f.priority.indexOf(p) === -1)) return false;
+                    if (f.owner.length && (!o || f.owner.indexOf(o) === -1)) return false;
+                    return true;
+                }
+                if (board) {
+                    board.querySelectorAll('.dashboard-card').forEach(function (card) {
+                        card.style.display = matches(card) ? '' : 'none';
+                    });
+                }
+                listView.querySelectorAll('.dashboard-task-row').forEach(function (row) {
+                    row.style.display = matches(row) ? '' : 'none';
+                });
+            }
+            if (filterApply) filterApply.addEventListener('click', function () {
+                applyFilters();
+                if (filterDropdown) filterDropdown.hidden = true;
+                if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
+            });
+            if (filterClear) filterClear.addEventListener('click', function () {
+                views.querySelectorAll('.dashboard-filter-dropdown input[type="checkbox"]').forEach(function (c) { c.checked = false; });
+                applyFilters();
+                if (filterDropdown) filterDropdown.hidden = true;
+                if (filterToggle) filterToggle.setAttribute('aria-expanded', 'false');
+            });
+            views.querySelectorAll('.dashboard-filter-dropdown input[type="checkbox"]').forEach(function (cb) {
+                cb.addEventListener('change', function () {
+                    var f = getActiveFilters();
+                    var total = f.status.length + f.priority.length + f.owner.length;
+                    if (filterBadge) {
+                        filterBadge.hidden = total === 0;
+                        filterBadge.textContent = total;
+                    }
+                });
+            });
+
+            /* Modal Nueva tarea */
+            var btnNewTask = document.getElementById('btnNewTask');
+            var overlay = document.getElementById('modalNewTaskOverlay');
+            var modal = document.getElementById('modalNewTask');
+            var closeBtn = document.getElementById('modalNewTaskClose');
+            var cancelBtn = document.getElementById('modalNewTaskCancel');
+            var formNewTask = document.getElementById('formNewTask');
+
+            function openNewTaskModal() {
+                if (overlay) {
+                    overlay.hidden = false;
+                    document.body.classList.add('task-modal-open');
+                    setTimeout(function () {
+                        var firstInput = document.getElementById('taskName');
+                        if (firstInput) firstInput.focus();
+                    }, 100);
+                }
+            }
+            function closeNewTaskModal() {
+                if (overlay) {
+                    overlay.hidden = true;
+                    document.body.classList.remove('task-modal-open');
+                }
+            }
+
+            if (btnNewTask) btnNewTask.addEventListener('click', openNewTaskModal);
+            if (closeBtn) closeBtn.addEventListener('click', closeNewTaskModal);
+            if (cancelBtn) cancelBtn.addEventListener('click', closeNewTaskModal);
+            if (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeNewTaskModal();
+                });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && overlay && !overlay.hidden) closeNewTaskModal();
+            });
+            if (formNewTask) {
+                formNewTask.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    /* Aquí puedes enviar el formulario por AJAX o redirigir */
+                    closeNewTaskModal();
+                    formNewTask.reset();
+                });
+            }
+        })();
+    </script>
 }
 else
 {

@@ -16,13 +16,16 @@ public class HomeController : Controller
         _userManager = userManager;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string view = null)
     {
         if (User.Identity?.IsAuthenticated == true)
         {
             var user = await _userManager.GetUserAsync(User);
             ViewData["UserDisplayName"] = user?.NombreCompleto ?? user?.UserName ?? User.Identity.Name ?? "Usuario";
             ViewData["Layout"] = "_HomeLayout";
+            ViewData["DashboardView"] = string.Equals(view, "list", StringComparison.OrdinalIgnoreCase) ? "list" : "board";
+            if (ViewData["DashboardView"] as string == "list")
+                ViewData["CurrentSection"] = "Tasks";
         }
         else
         {

@@ -11,22 +11,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
+    <script>
+        (function () {
+            function hexToRgba(hex, a) {
+                if (!hex || hex.indexOf('#') !== 0) return 'rgba(45,127,249,0.2)';
+                var m = hex.slice(1).match(/([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/i);
+                if (!m) return 'rgba(45,127,249,0.2)';
+                return 'rgba(' + parseInt(m[1], 16) + ',' + parseInt(m[2], 16) + ',' + parseInt(m[3], 16) + ',' + a + ')';
+            }
+            try {
+                var raw = localStorage.getItem('dashboardTheme');
+                if (raw) {
+                    var data = JSON.parse(raw);
+                    if (data && data.theme) {
+                        var t = data.theme;
+                        var r = document.documentElement;
+                        r.style.setProperty('--dash-blue', t.blue || '#2D7FF9');
+                        r.style.setProperty('--dash-orange', t.orange || '#FFB020');
+                        r.style.setProperty('--dash-purple', t.purple || '#7B61FF');
+                        r.style.setProperty('--dash-green', t.green || '#52C41A');
+                        r.style.setProperty('--dash-column-blue', hexToRgba(t.blue, 0.2));
+                        r.style.setProperty('--dash-column-orange', hexToRgba(t.orange, 0.2));
+                        r.style.setProperty('--dash-column-purple', hexToRgba(t.purple, 0.2));
+                        r.style.setProperty('--dash-column-green', hexToRgba(t.green, 0.2));
+                    }
+                }
+            } catch (e) {}
+        })();
+    </script>
 </head>
 <body class="dashboard-body">
+    @{
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+        var currentSection = ViewData["CurrentSection"] as string ?? "";
+    }
     <aside class="dashboard-sidebar">
         <div class="dashboard-sidebar-logo">
             <img src="~/img/logo.png" alt="Planificacion" class="dashboard-logo-img" asp-append-version="true" />
         </div>
         <nav class="dashboard-nav">
-            <a asp-controller="Home" asp-action="Index" class="dashboard-nav-item active">
+            <a asp-controller="Home" asp-action="Index" class="dashboard-nav-item @(controller == "Home" && currentSection != "Tasks" ? "active" : "")">
                 <i class="fas fa-home dashboard-nav-icon"></i>
                 <span>Home</span>
             </a>
-            <a href="#" class="dashboard-nav-item">
+            <a asp-controller="Home" asp-action="Index" asp-route-view="list" class="dashboard-nav-item @(currentSection == "Tasks" ? "active" : "")">
                 <i class="fas fa-list-check dashboard-nav-icon"></i>
                 <span>Tasks</span>
             </a>
-            <a href="#" class="dashboard-nav-item">
+            <a asp-controller="Projects" asp-action="Index" class="dashboard-nav-item @(controller == "Projects" ? "active" : "")">
                 <i class="fas fa-folder dashboard-nav-icon"></i>
                 <span>Projects</span>
             </a>
@@ -42,17 +74,11 @@
                 <i class="fas fa-folder-open dashboard-nav-icon"></i>
                 <span>Files</span>
             </a>
-            <a href="#" class="dashboard-nav-item">
+            <a asp-controller="Settings" asp-action="Index" class="dashboard-nav-item @(controller == "Settings" ? "active" : "")">
                 <i class="fas fa-gear dashboard-nav-icon"></i>
                 <span>Settings</span>
             </a>
         </nav>
-        <div class="dashboard-sidebar-footer">
-            <button type="button" class="dashboard-btn-upgrade">
-                <i class="fas fa-rocket dashboard-btn-upgrade-icon"></i>
-                <span>Upgrade</span>
-            </button>
-        </div>
     </aside>
     <div class="dashboard-main-wrap">
         <header class="dashboard-navbar">
