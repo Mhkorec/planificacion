@@ -55,3 +55,4 @@ appsettings.Local.json
 ### OS
 .DS_Store
 Thumbs.db
+/planificacion.Infraestructure/obj
