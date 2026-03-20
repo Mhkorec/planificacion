@@ -2,6 +2,8 @@
 @{
     Layout = "~/Views/Shared/_HomeLayout.cshtml";
     ViewData["Title"] = "Proyectos";
+    var projectIcons = (ViewData["ProjectIcons"] as string[]) ?? Array.Empty<string>();
+    var defaultIcon = "bi bi-folder-fill";
 }
 
 <div class="dashboard-welcome d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -41,7 +43,14 @@
                 {
                     <div class="project-item" data-project-id="@project.Id">
                         <div class="project-item-icon">
-                            <i class="fas fa-folder"></i>
+                            @if (!string.IsNullOrWhiteSpace(project.IconImagePath))
+                            {
+                                <img src="@project.IconImagePath" alt="Icono de @project.Name" class="project-item-icon-image" />
+                            }
+                            else
+                            {
+                                <i class="@(!string.IsNullOrWhiteSpace(project.IconClass) ? project.IconClass : defaultIcon)"></i>
+                            }
                         </div>
                         <div class="project-item-body">
                             <h3 class="project-item-name">@project.Name</h3>
@@ -80,7 +89,7 @@
 <div class="modal fade" id="modalNewProject" tabindex="-1" aria-labelledby="modalNewProjectLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content project-modal">
-            <form asp-controller="Projects" asp-action="Create" method="post">
+            <form asp-controller="Projects" asp-action="Create" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
                 <div class="modal-header project-modal-header">
                     <h5 class="modal-title" id="modalNewProjectLabel"><i class="fas fa-folder-plus me-2"></i>Nuevo proyecto</h5>
@@ -94,6 +103,39 @@
                     <div class="mb-3">
                         <label for="Description" class="form-label project-modal-label"><i class="fas fa-align-left me-1 project-modal-label-icon"></i>Descripción</label>
                         <textarea class="form-control project-modal-input" id="Description" name="Description" rows="3" placeholder="Breve descripción del proyecto (opcional)"></textarea>
+                    </div>
+                    <div class="mb-2">
+                        <label for="IconClass" class="form-label project-modal-label"><i class="fas fa-icons me-1 project-modal-label-icon"></i>Ícono</label>
+                        <div class="project-icon-picker mb-2">
+                            <div class="project-icon-preview" aria-hidden="true">
+                                <i id="projectIconPreviewIcon" class="@defaultIcon"></i>
+                            </div>
+                            <span class="text-muted small">Selecciona un ícono para el proyecto</span>
+                        </div>
+                        <input type="text"
+                               class="form-control project-modal-input project-icon-search mb-2"
+                               id="ProjectIconSearch"
+                               placeholder="Buscar icono (ej: phone, chart, heart, rocket)" />
+                        <input type="hidden" id="IconClass" name="IconClass" value="@defaultIcon" />
+                        <div class="mt-2">
+                            <label for="IconFile" class="form-label project-modal-label"><i class="fas fa-upload me-1 project-modal-label-icon"></i>O subir icono propio</label>
+                            <input type="file" class="form-control project-modal-input" id="IconFile" name="IconFile" accept=".png,.jpg,.jpeg,.webp,.svg,image/png,image/jpeg,image/webp,image/svg+xml" />
+                            <div class="form-text">Formatos: PNG, JPG, JPEG, WEBP o SVG. Maximo 2 MB.</div>
+                        </div>
+                        <div class="project-icon-grid" role="listbox" aria-label="Selecciona un ícono">
+                            @foreach (var icon in projectIcons)
+                            {
+                                var isSelected = icon == defaultIcon;
+                                <button type="button"
+                                        class="project-icon-option @(isSelected ? "is-selected" : "")"
+                                        data-icon="@icon"
+                                        role="option"
+                                        aria-selected="@(isSelected ? "true" : "false")"
+                                        title="@icon">
+                                    <i class="@icon" aria-hidden="true"></i>
+                                </button>
+                            }
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer project-modal-footer">
@@ -115,5 +157,55 @@ document.querySelectorAll('.project-delete-form').forEach(function(form) {
         }
     });
 });
+
+var iconInput = document.getElementById('IconClass');
+var iconPreview = document.querySelector('.project-icon-preview');
+var iconOptions = document.querySelectorAll('.project-icon-option');
+var iconSearch = document.getElementById('ProjectIconSearch');
+var iconFileInput = document.getElementById('IconFile');
+
+if (iconInput && iconPreview && iconOptions.length > 0) {
+    var setSelectedIcon = function(selectedIcon) {
+        iconInput.value = selectedIcon || '@defaultIcon';
+        iconPreview.innerHTML = '<i class="' + iconInput.value + '"></i>';
+
+        iconOptions.forEach(function(option) {
+            var isSelected = option.getAttribute('data-icon') === iconInput.value;
+            option.classList.toggle('is-selected', isSelected);
+            option.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        });
+    };
+
+    iconOptions.forEach(function(option) {
+        option.addEventListener('click', function() {
+            setSelectedIcon(option.getAttribute('data-icon'));
+        });
+    });
+
+    if (iconSearch) {
+        iconSearch.addEventListener('input', function() {
+            var query = (iconSearch.value || '').toLowerCase().trim();
+            iconOptions.forEach(function(option) {
+                var iconClass = (option.getAttribute('data-icon') || '').toLowerCase();
+                var shouldShow = !query || iconClass.indexOf(query) !== -1;
+                option.style.display = shouldShow ? '' : 'none';
+            });
+        });
+    }
+
+    setSelectedIcon(iconInput.value);
+}
+
+if (iconFileInput && iconPreview) {
+    iconFileInput.addEventListener('change', function() {
+        var file = iconFileInput.files && iconFileInput.files[0];
+        if (!file) {
+            return;
+        }
+
+        var imageUrl = URL.createObjectURL(file);
+        iconPreview.innerHTML = '<img src="' + imageUrl + '" alt="Vista previa" class="project-icon-preview-image" />';
+    });
+}
 </script>
 }

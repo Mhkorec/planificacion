@@ -21,7 +21,17 @@
 <div class="dashboard-welcome d-flex flex-wrap align-items-center justify-content-between gap-3">
     <div>
         <nav aria-label="Miga de pan" class="project-detail-breadcrumb mb-1">
-            <a asp-controller="Projects" asp-action="Index" class="text-muted text-decoration-none small"><i class="fas fa-folder me-1"></i>Proyectos</a>
+            <a asp-controller="Projects" asp-action="Index" class="text-muted text-decoration-none small">
+                @if (!string.IsNullOrWhiteSpace(Model.Project.IconImagePath))
+                {
+                    <img src="@Model.Project.IconImagePath" alt="Icono del proyecto" class="project-detail-breadcrumb-icon-image me-1" />
+                }
+                else
+                {
+                    <i class="@(string.IsNullOrWhiteSpace(Model.Project.IconClass) ? "bi bi-folder-fill" : Model.Project.IconClass) me-1"></i>
+                }
+                Proyectos
+            </a>
             <span class="text-muted mx-2">/</span>
             <span class="small">@Model.Project.Name</span>
         </nav>
@@ -33,7 +43,7 @@
     </div>
 </div>
 
-<div class="projects-section mt-4">
+<div class="projects-section projects-section--full mt-4">
     <div class="settings-card">
         <h2 class="settings-card-title"><i class="fas fa-list-check"></i> Tareas del proyecto</h2>
         <p class="settings-card-desc">Listado de tareas asociadas a este proyecto.</p>
