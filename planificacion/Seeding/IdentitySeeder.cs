@@ -37,9 +37,15 @@ public static class IdentitySeeder
             if (result.Succeeded)
                 await userManager.AddToRoleAsync(adminUser, "Admin");
         }
-        else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+        else
         {
-            await userManager.AddToRoleAsync(adminUser, "Admin");
+            if (!adminUser.EmailConfirmed)
+            {
+                adminUser.EmailConfirmed = true;
+                await userManager.UpdateAsync(adminUser);
+            }
+            if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+                await userManager.AddToRoleAsync(adminUser, "Admin");
         }
     }
 }

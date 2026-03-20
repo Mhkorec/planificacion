@@ -1,0 +1,115 @@
+@model planificacion.Web.Controllers.ProjectDetailViewModel
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = Model.Project.Name;
+    var statusBadgeMap = new Dictionary<string, string>
+    {
+        { "not-started", "dashboard-task-badge-not-started" },
+        { "in-progress", "dashboard-task-badge-in-progress" },
+        { "in-review", "dashboard-task-badge-in-review" },
+        { "completed", "dashboard-task-badge-completed" }
+    };
+    var statusLabelMap = new Dictionary<string, string>
+    {
+        { "not-started", "Not Started" },
+        { "in-progress", "In Progress" },
+        { "in-review", "In Review" },
+        { "completed", "Completed" }
+    };
+}
+
+<div class="dashboard-welcome d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+        <nav aria-label="Miga de pan" class="project-detail-breadcrumb mb-1">
+            <a asp-controller="Projects" asp-action="Index" class="text-muted text-decoration-none small"><i class="fas fa-folder me-1"></i>Proyectos</a>
+            <span class="text-muted mx-2">/</span>
+            <span class="small">@Model.Project.Name</span>
+        </nav>
+        <h1 class="dashboard-welcome-title">@Model.Project.Name</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Project.Description))
+        {
+            <p class="dashboard-welcome-subtitle text-muted mb-0">@Model.Project.Description</p>
+        }
+    </div>
+</div>
+
+<div class="projects-section mt-4">
+    <div class="settings-card">
+        <h2 class="settings-card-title"><i class="fas fa-list-check"></i> Tareas del proyecto</h2>
+        <p class="settings-card-desc">Listado de tareas asociadas a este proyecto.</p>
+
+        @if (Model.Tasks != null && Model.Tasks.Count > 0)
+        {
+            <div class="dashboard-task-table-wrap">
+                <table class="dashboard-task-table" aria-label="Tareas del proyecto">
+                    <thead>
+                        <tr>
+                            <th class="dashboard-task-th dashboard-task-th-task">
+                                <i class="fas fa-list dashboard-task-th-icon" aria-hidden="true"></i>
+                                <span>Tarea</span>
+                            </th>
+                            <th class="dashboard-task-th dashboard-task-th-status">
+                                <i class="fas fa-align-left dashboard-task-th-icon" aria-hidden="true"></i>
+                                <span>Estado</span>
+                            </th>
+                            <th class="dashboard-task-th dashboard-task-th-due">
+                                <i class="fas fa-calendar-alt dashboard-task-th-icon" aria-hidden="true"></i>
+                                <span>Fecha límite</span>
+                            </th>
+                            <th class="dashboard-task-th dashboard-task-th-priority">
+                                <i class="fas fa-flag dashboard-task-th-icon" aria-hidden="true"></i>
+                                <span>Prioridad</span>
+                            </th>
+                            <th class="dashboard-task-th dashboard-task-th-owner">
+                                <i class="fas fa-user dashboard-task-th-icon" aria-hidden="true"></i>
+                                <span>Responsable</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in Model.Tasks)
+                        {
+                            var statusClass = statusBadgeMap.GetValueOrDefault(task.Status, "dashboard-task-badge-not-started");
+                            var statusLabel = statusLabelMap.GetValueOrDefault(task.Status, task.Status);
+                            var priorityClass = "dashboard-task-badge-priority-" + (task.Priority ?? "medium");
+                            <tr class="dashboard-task-row" data-status="@task.Status" data-priority="@task.Priority">
+                                <td class="dashboard-task-td dashboard-task-td-task">
+                                    <i class="fas fa-tasks dashboard-task-icon" aria-hidden="true"></i>
+                                    <span>@task.Title</span>
+                                </td>
+                                <td class="dashboard-task-td">
+                                    <span class="dashboard-task-badge @statusClass"><i class="fas fa-check" aria-hidden="true"></i> @statusLabel</span>
+                                </td>
+                                <td class="dashboard-task-td">
+                                    @if (task.DueDate.HasValue)
+                                    {
+                                        <i class="fas fa-calendar-alt dashboard-task-date-icon" aria-hidden="true"></i>
+                                        @task.DueDate.Value.ToString("dd MMM", new System.Globalization.CultureInfo("es-ES"))
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                </td>
+                                <td class="dashboard-task-td">
+                                    <span class="dashboard-task-badge @priorityClass">@(task.Priority == "high" ? "Alta" : task.Priority == "low" ? "Baja" : "Media")</span>
+                                </td>
+                                <td class="dashboard-task-td dashboard-task-td-owner">
+                                    <span class="dashboard-task-avatar">@(task.Owner?.Length > 0 ? task.Owner.Substring(0, 1).ToUpperInvariant() : "?")</span> @task.Owner
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="projects-empty text-center py-5">
+                <i class="fas fa-tasks fa-3x text-muted mb-3"></i>
+                <p class="text-muted mb-2">Este proyecto aún no tiene tareas.</p>
+                <p class="text-muted small mb-0">Las tareas que agregues al proyecto aparecerán aquí.</p>
+            </div>
+        }
+    </div>
+</div>

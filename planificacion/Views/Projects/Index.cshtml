@@ -1,0 +1,119 @@
+@model List<planificacion.Web.Controllers.ProjectItemViewModel>
+@{
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    ViewData["Title"] = "Proyectos";
+}
+
+<div class="dashboard-welcome d-flex flex-wrap align-items-center justify-content-between gap-3">
+    <div>
+        <h1 class="dashboard-welcome-title">Proyectos</h1>
+        <p class="dashboard-welcome-subtitle text-muted mb-0">Gestiona tus proyectos y accede a sus tareas.</p>
+    </div>
+    <button type="button" class="btn btn-primary dashboard-btn-new-task" data-bs-toggle="modal" data-bs-target="#modalNewProject" id="btnNewProject">
+        <i class="fas fa-plus"></i> Nuevo proyecto
+    </button>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<div class="projects-section">
+    <div class="settings-card">
+        <h2 class="settings-card-title"><i class="fas fa-folder"></i> Listado de proyectos</h2>
+        <p class="settings-card-desc">Todos los proyectos en los que participas. Crea uno nuevo para organizar tareas.</p>
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="projects-list">
+                @foreach (var project in Model)
+                {
+                    <div class="project-item" data-project-id="@project.Id">
+                        <div class="project-item-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="project-item-body">
+                            <h3 class="project-item-name">@project.Name</h3>
+                            @if (!string.IsNullOrWhiteSpace(project.Description))
+                            {
+                                <p class="project-item-desc text-muted">@project.Description</p>
+                            }
+                            <span class="project-item-meta text-muted small">Creado @project.CreatedAt.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <div class="project-item-actions d-flex align-items-center gap-1">
+                            <a asp-controller="Projects" asp-action="Detail" asp-route-id="@project.Id" class="dashboard-icon-btn" title="Abrir proyecto"><i class="fas fa-arrow-right"></i></a>
+                            <form asp-controller="Projects" asp-action="Delete" method="post" class="d-inline project-delete-form" data-project-name="@project.Name">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@project.Id" />
+                                <button type="submit" class="dashboard-icon-btn project-item-delete" title="Eliminar proyecto" aria-label="Eliminar proyecto">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="projects-empty text-center py-5">
+                <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted mb-2">Aún no tienes proyectos.</p>
+                <p class="text-muted small mb-0">Haz clic en <strong>Nuevo proyecto</strong> para crear el primero.</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal Nuevo proyecto -->
+<div class="modal fade" id="modalNewProject" tabindex="-1" aria-labelledby="modalNewProjectLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content project-modal">
+            <form asp-controller="Projects" asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-header project-modal-header">
+                    <h5 class="modal-title" id="modalNewProjectLabel"><i class="fas fa-folder-plus me-2"></i>Nuevo proyecto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body project-modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label project-modal-label"><i class="fas fa-tag me-1 project-modal-label-icon"></i>Nombre <span class="project-modal-required">*</span></label>
+                        <input type="text" class="form-control project-modal-input" id="Name" name="Name" required maxlength="200" placeholder="Ej: Sitio web corporativo" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="Description" class="form-label project-modal-label"><i class="fas fa-align-left me-1 project-modal-label-icon"></i>Descripción</label>
+                        <textarea class="form-control project-modal-input" id="Description" name="Description" rows="3" placeholder="Breve descripción del proyecto (opcional)"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer project-modal-footer">
+                    <button type="button" class="btn project-modal-btn-cancel" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn project-modal-btn-submit"><i class="fas fa-check me-1"></i>Crear proyecto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+document.querySelectorAll('.project-delete-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+        var name = form.getAttribute('data-project-name') || 'este proyecto';
+        if (!confirm('¿Eliminar el proyecto «' + name + '»? Esta acción no se puede deshacer.')) {
+            e.preventDefault();
+        }
+    });
+});
+</script>
+}
