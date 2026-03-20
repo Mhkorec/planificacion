@@ -22,3 +22,60 @@ planificacion.Application/obj/Debug/net8.0/planificacion.Application.GeneratedMS
 planificacion.Application/obj/Debug/net8.0/planificacion.Application.assets.cache
 planificacion.Application/obj/Debug/net8.0/planificacion.Application.AssemblyInfoInputs.cache
 planificacion.Application/obj/Debug/net8.0/planificacion.Application.AssemblyInfo.cs
+### Artefactos de build (SDK-style .NET)
+**/bin/
+**/obj/
+**/out/
+**/publish/
+
+### Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+### Rider / JetBrains
+.idea/
+
+### VS Code
+.vscode/
+
+### ReSharper (opcional)
+*.DotSettings.user
+
+### Resultados de tests
+TestResults/
+coverage/
+coverage*.xml
+
+### NuGet
+packages/
+*.nupkg
+
+### Logs y temporales
+*.log
+*.tmp
+
+### EF / LocalDB (si usás archivos locales)
+*.mdf
+*.ldf
+*.dbmdl
+
+### Caches locales
+*.cache
+
+### Archivos de secrets / configuración local
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+.env
+
+### Secretos / claves (evita commitear)
+*.pfx
+*.p12
+*.snk
+*.key
+
+### OS
+.DS_Store
+Thumbs.db
